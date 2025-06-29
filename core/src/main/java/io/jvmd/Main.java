@@ -3,91 +3,68 @@ package io.jvmd;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import io.jvmd.api.entity.impl.Entity;
-import io.jvmd.api.entity.impl.SimpleObject;
-import io.jvmd.api.world.impl.ext.PlaneWorld;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import io.jvmd.api.actors.impl.AnimatedActor;
+import io.jvmd.api.actors.impl.SimpleActor;
+import io.jvmd.api.world.BPBWorld;
+import io.jvmd.api.world.impl.SimpleBpbWorld;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
  */
 public class Main extends ApplicationAdapter {
 
-    private Camera cam;
-    private Environment environment;
-    private CameraInputController camController;
-    private PlaneWorld planeWorld;
-    private SimpleObject simpleObject;
-    private Vector3 spawnPos = new Vector3(0,20,0);
-    private Entity entity;
+    private BPBWorld world;
+    private SpriteBatch batch;
+    private Texture texture;
 
     @Override
     public void create() {
+        texture = new Texture("developer.png");
 
+        world = new SimpleBpbWorld();
+        world.setup();
+        batch = new SpriteBatch();
+        world.setBatch(batch);
+        OrthographicCamera camera = new OrthographicCamera();
+        camera.position.setZero();
+        camera.setToOrtho(false, 600 , 315);
+        world.setCamera(camera);
+        SimpleActor actor_1 = new SimpleActor(BodyDef.BodyType.StaticBody, new Vector2(0, 0), new Vector2(5, 5), world);
+        actor_1.setTexture(texture);
+        actor_1.setWorld(world);
 
-        cam = new PerspectiveCamera(90,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(5f, 5f, 5f);
-        cam.lookAt(spawnPos);
-        cam.near = 1f;
-        cam.far = 300f;
-        cam.update();
+        Map<String  , String> paths = Map.of("rotated" , "");
 
-        environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        AnimatedActor animatedActor = new AnimatedActor(BodyDef.BodyType.StaticBody ,
+            new Vector2(4 , 5) , new Vector2(3 ,3 ) , world ,   , 7 , 1   , 0.025);
 
-        planeWorld = new PlaneWorld(environment, 100f, 100f, cam);
-
-        ModelBuilder modelBuilder = new ModelBuilder();
-        Model model = modelBuilder.createCone(10f, 10f, 10f, 10, new Material(ColorAttribute.createDiffuse(Color.RED)), VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-
-        simpleObject = new SimpleObject("name", model, cam);
-        simpleObject.setWorld(planeWorld);
-        simpleObject.setPosition(spawnPos);
-
-        entity = new Entity("Dan", model, cam, 100) {
-            @Override
-            public void walk() {
-
-            }
-
-            @Override
-            public void jump() {
-
-            }
-        };
-        entity.setWorld(planeWorld);
-        entity.setPosition(spawnPos);
-
-        planeWorld.add(entity);
-        planeWorld.add(simpleObject);
-
-
-        camController = new CameraInputController(cam);
-        Gdx.input.setInputProcessor(camController);
+        world.addActor(actor_1);
     }
 
     @Override
     public void render() {
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camController.update();
-        simpleObject.update();
-
-        planeWorld.render();
-
-        entity.update();
-
+        world.render();
     }
 
     @Override
     public void dispose() {
-        simpleObject.dispose();
+
     }
 }
