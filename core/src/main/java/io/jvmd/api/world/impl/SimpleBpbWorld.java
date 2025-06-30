@@ -26,6 +26,20 @@ public class SimpleBpbWorld implements BPBWorld {
     private Camera camera;
 
     @Override
+    public Actor getActor(String name_id) {
+        return actors.get(name_id);
+    }
+
+    public int getIndex(Actor actor) {
+        return objectIndexer.getIndex(actor);
+    }
+
+    @Override
+    public void update(Actor actor) {
+            actors.put(actor.prefix + getIndex(actor) , actor);
+    }
+
+    @Override
     public void setup() {
         world = new World(new Vector2(0, 0), true);
         actors = new HashMap<>();

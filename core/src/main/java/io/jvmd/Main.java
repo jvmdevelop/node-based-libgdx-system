@@ -29,11 +29,12 @@ public class Main extends ApplicationAdapter {
 
     private BPBWorld world;
     private SpriteBatch batch;
-    private Texture texture;
+//    private Texture texture;
+    private AnimatedActor animatedActor;
 
     @Override
     public void create() {
-        texture = new Texture("developer.png");
+//        texture = new Texture("developer.png");
 
         world = new SimpleBpbWorld();
         world.setup();
@@ -43,16 +44,24 @@ public class Main extends ApplicationAdapter {
         camera.position.setZero();
         camera.setToOrtho(false, 600 , 315);
         world.setCamera(camera);
-        SimpleActor actor_1 = new SimpleActor(BodyDef.BodyType.StaticBody, new Vector2(0, 0), new Vector2(5, 5), world);
-        actor_1.setTexture(texture);
-        actor_1.setWorld(world);
+//        SimpleActor actor_1 = new SimpleActor(BodyDef.BodyType.StaticBody, new Vector2(0, 0), new Vector2(5, 5), world);
+//        actor_1.setTexture(texture);
+//        actor_1.setWorld(world);
 
-        Map<String  , String> paths = Map.of("rotated" , "");
+        Map<String  , String> paths = new HashMap<String , String> (  ) {{
+                put("rotated" , "player_rotate.png");
+            }
+        };
 
-        AnimatedActor animatedActor = new AnimatedActor(BodyDef.BodyType.StaticBody ,
-            new Vector2(4 , 5) , new Vector2(3 ,3 ) , world ,   , 7 , 1   , 0.025);
+        animatedActor = new AnimatedActor(BodyDef.BodyType.StaticBody ,
+            new Vector2(100 , 100) , new Vector2(5,5 ) , world ,   paths, 8, 1   , 0.15f);
 
-        world.addActor(actor_1);
+        animatedActor.setTexture(new Texture("player.png"));
+        animatedActor.setWorld(world);
+
+
+        world.addActor(animatedActor);
+//        world.addActor(actor_1);
     }
 
     @Override
@@ -61,6 +70,8 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.render();
+        animatedActor.playAnimation("rotated");
+        animatedActor.stopAnimation();
     }
 
     @Override

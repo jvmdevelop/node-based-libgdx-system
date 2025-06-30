@@ -25,7 +25,8 @@ public interface BPBWorld {
         }
     }
 
-
+    Actor getActor(String name_id);
+    void update(Actor actor);
     void setup();
     void render();
     void addActor(Actor actor);
