@@ -1,33 +1,42 @@
 package io.jvmd.api.actors.impl.entity;
 
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import io.jvmd.api.actors.Actor;
 import io.jvmd.api.actors.impl.AnimatedActor;
-import io.jvmd.user.input.UserInput;
+import io.jvmd.input.BPBInputProcessor;
+
 
 public enum EntityType {
 
-    // todo make a move mathod abstarct and implement it in each enum  in enemy and peacefulentity with AI module
+    // todo make a move method abstarct and implement it in each enum  in enemy and peacefulentity with AI module
 
     PLAYER {
-        private UserInput userInput;
+        Vector2 camertaPosition = new Vector2();
+        //todo make a settings lerp
+        float lerp = 0.01f;
 
-        public void move(){
-            move(userInput.getDirection());
+
+        @Override
+        public void move(Vector2 direction) {
+
+            direction.x *= PLAYER.SPEED;
+            direction.y *= PLAYER.SPEED;
+            getBody().setPosition(getBody().getPosition().add(direction));
+            OrthographicCamera camera = getBody().getCamera();
+            camertaPosition.lerp(getBody().getPosition(), lerp);
+
+            camera.position.x = camertaPosition.x;
+            camera.position.y = camertaPosition.y;
+
         }
 
-        private void move(Vector2 direction) {
-                        direction.x  *= PLAYER.SPEED;
-                        direction.y  *= PLAYER.SPEED;
-                        getBody().setPosition(direction);
-        }
+    },
+    PEACEFULENTITY {
+        @Override
+        protected void move(Vector2 direction) {
 
-        public void setInputProcessor(UserInput processor) {
-            this.userInput = processor;
         }
     },
-    PEACEFULENTITY,
     ENEMY {
         private int damage = 10;
 
@@ -42,19 +51,36 @@ public enum EntityType {
         public void setDamage(int damage) {
             this.damage = damage;
         }
+
+        @Override
+        protected void move(Vector2 direction) {
+
+        }
     };
 
-    private int SPEED = 10;
+
+    private float SPEED = 1f;
     private static final int defaultHealth = 100;
     private int health;
     private AnimatedActor body;
+    private BPBInputProcessor input;
 
     EntityType() {
         this.health = defaultHealth;
     }
 
+    protected abstract void move(Vector2 direction);
+
+    protected void move() {
+        move(input.getDirection());
+    }
+
     public void setSPEED(int SPEED) {
         this.SPEED = SPEED;
+    }
+
+    public void setInputProcessor(BPBInputProcessor processor) {
+        this.input = processor;
     }
 
     protected int getHealth() {

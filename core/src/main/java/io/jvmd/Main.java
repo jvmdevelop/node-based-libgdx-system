@@ -4,20 +4,14 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.*;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import io.jvmd.api.actors.impl.AnimatedActor;
-import io.jvmd.api.actors.impl.SimpleActor;
+import io.jvmd.api.actors.impl.entity.Entity;
+import io.jvmd.api.actors.impl.entity.EntityType;
 import io.jvmd.api.world.BPBWorld;
 import io.jvmd.api.world.impl.SimpleBpbWorld;
+import io.jvmd.input.BPBInputProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,39 +23,54 @@ public class Main extends ApplicationAdapter {
 
     private BPBWorld world;
     private SpriteBatch batch;
-//    private Texture texture;
     private AnimatedActor animatedActor;
+    private Entity player;
 
     @Override
     public void create() {
-//        texture = new Texture("developer.png");
-
         world = new SimpleBpbWorld();
         world.setup();
         batch = new SpriteBatch();
         world.setBatch(batch);
         OrthographicCamera camera = new OrthographicCamera();
         camera.position.setZero();
-        camera.setToOrtho(false, 600 , 315);
+        camera.setToOrtho(false, 600, 315);
         world.setCamera(camera);
-//        SimpleActor actor_1 = new SimpleActor(BodyDef.BodyType.StaticBody, new Vector2(0, 0), new Vector2(5, 5), world);
-//        actor_1.setTexture(texture);
-//        actor_1.setWorld(world);
 
-        Map<String  , String> paths = new HashMap<String , String> (  ) {{
-                put("rotated" , "player_rotate.png");
+        BPBInputProcessor processor = new BPBInputProcessor();
+        Gdx.input.setInputProcessor(processor);
+
+        Map<String, String> paths = new HashMap<String, String>() {
+            {
+                put("rotated", "player_rotate.png");
             }
         };
 
-        animatedActor = new AnimatedActor(BodyDef.BodyType.StaticBody ,
-            new Vector2(100 , 100) , new Vector2(5,5 ) , world ,   paths, 8, 1   , 0.15f);
+        animatedActor = new AnimatedActor(BodyDef.BodyType.StaticBody,
+            new Vector2(100, 100), new Vector2(5, 5), world, paths, 8, 1, 0.1f);
 
         animatedActor.setTexture(new Texture("player.png"));
         animatedActor.setWorld(world);
+        animatedActor.setCamera(camera);
 
+        player = new Entity() {
+            {
+                getType().setInputProcessor(processor);
+            }
 
-        world.addActor(animatedActor);
-//        world.addActor(actor_1);
+            @Override
+            public String getName() {
+                return "jvmd";
+            }
+
+            @Override
+            public EntityType getType() {
+                return EntityType.PLAYER;
+            }
+        };
+
+        player.setBody(animatedActor);
+        world.addActor(player.getBody());
     }
 
     @Override
@@ -70,8 +79,12 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.render();
-        animatedActor.playAnimation("rotated");
-        animatedActor.stopAnimation();
+
+//        player.getBody().playAnimation("rotated", true , false , false);
+
+        player.move();
+
+        System.out.println(animatedActor.getPosition().x + " " + animatedActor.getPosition().y);
     }
 
     @Override

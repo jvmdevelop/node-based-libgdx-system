@@ -1,11 +1,11 @@
-package io.jvmd.user.input;
+package io.jvmd.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 
-public class UserInput extends InputAdapter {
+public class BPBInputProcessor extends InputAdapter {
 
     private Vector2 direction = new Vector2();
 

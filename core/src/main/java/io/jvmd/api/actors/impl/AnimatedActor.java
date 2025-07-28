@@ -23,6 +23,7 @@ public class AnimatedActor extends SimpleActor {
     private boolean isAnimating;
     private TextureRegion currenetFrame;
 
+
     public AnimatedActor(BodyDef.BodyType bodyType, Vector2 position, Vector2 proportion, BPBWorld world, Map<String, String> sheets, int cols, int rows, float frameDuration) {
         super(bodyType, position, proportion, world);
         sheetsSource = new HashMap<>();
@@ -51,13 +52,16 @@ public class AnimatedActor extends SimpleActor {
         }
     }
 
-    public void playAnimation(String animationName) {
+    boolean isFlipping = false;
+
+    public void playAnimation(String animationName, boolean flipX, boolean flipY, boolean looping) {
         if (stateTime == -1) currenetFrame = new TextureRegion(getTexture());
-        else{
+        else {
             isAnimating = true;
-            stateTime += Gdx.graphics.getDeltaTime();
-            currenetFrame = animations.get(animationName).getKeyFrame(stateTime, true);
         }
+        stateTime += Gdx.graphics.getDeltaTime();
+        currenetFrame = animations.get(animationName).getKeyFrame(stateTime, looping);
+        currenetFrame.flip(flipX, flipY);
         batch.begin();
         batch.draw(currenetFrame, getPosition().x, getPosition().y);
         batch.end();
