@@ -5,10 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.physics.box2d.World;
 import io.jvmd.api.actors.Actor;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface BPBWorld {
+public interface BPBWorld extends Serializable {
 
 
 
