@@ -1,4 +1,4 @@
-package io.jvmd.input;
+package io.jvmd.api.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;

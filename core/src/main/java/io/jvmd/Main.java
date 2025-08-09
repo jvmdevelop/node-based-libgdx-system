@@ -11,7 +11,7 @@ import io.jvmd.api.actors.impl.entity.Entity;
 import io.jvmd.api.actors.impl.entity.EntityType;
 import io.jvmd.api.world.BPBWorld;
 import io.jvmd.api.world.impl.SimpleBpbWorld;
-import io.jvmd.input.BPBInputProcessor;
+import io.jvmd.api.input.BPBInputProcessor;
 
 import java.util.HashMap;
 import java.util.Map;

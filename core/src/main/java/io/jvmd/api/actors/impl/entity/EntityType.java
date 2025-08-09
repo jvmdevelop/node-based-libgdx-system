@@ -3,7 +3,7 @@ package io.jvmd.api.actors.impl.entity;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import io.jvmd.api.actors.impl.AnimatedActor;
-import io.jvmd.input.BPBInputProcessor;
+import io.jvmd.api.input.BPBInputProcessor;
 
 
 public enum EntityType {

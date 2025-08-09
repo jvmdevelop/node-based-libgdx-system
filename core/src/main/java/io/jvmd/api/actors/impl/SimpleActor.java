@@ -7,9 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.jvmd.api.actors.Actor;
+import io.jvmd.api.data.PackageNode;
 import io.jvmd.api.world.BPBWorld;
 
-public class SimpleActor implements Actor {
+public class SimpleActor extends PackageNode implements Actor {
 
     private BPBWorld world;
     private OrthographicCamera camera;

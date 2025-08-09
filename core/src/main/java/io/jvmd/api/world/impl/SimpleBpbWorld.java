@@ -11,13 +11,14 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
 import io.jvmd.api.actors.Actor;
+import io.jvmd.api.data.PackageNode;
 import io.jvmd.api.world.BPBWorld;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class SimpleBpbWorld implements BPBWorld {
+public class SimpleBpbWorld extends PackageNode implements BPBWorld  {
 
     private World world;
     private Map<String , Actor> actors;
