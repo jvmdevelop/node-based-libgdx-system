@@ -1,5 +1,7 @@
 package io.jvmd.api.data;
 
+import java.io.IOException;
+
 public enum ECategory implements BPBPackage {
 
     WORLD {
@@ -13,10 +15,23 @@ public enum ECategory implements BPBPackage {
         public String getLocation() {
             return "preferences";
         }
+    },
+    ACTOR {
+        @Override
+        public String getLocation() {
+            return "actor";
+        }
     };
 
 
+
+
     private final PackageSaver saver = new PackageSaver();
+
+    @Override
+    public void save(PackageNode node) throws IOException {
+        getSaver().save(node, this);
+    }
 
     @Override
     public PackageSaver getSaver() {
