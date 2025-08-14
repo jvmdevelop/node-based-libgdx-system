@@ -7,16 +7,18 @@ import java.util.Random;
 
 public class MatrixGenerator implements Generator<int[][]> {
 
+
     @Override
     public int[][] generate(int size) {
         int[][] worldMatrix = new int[size][size];
 
         Random random = new Random();
-        int skipCountX = getSkipCountX(size, random);;
+        int skipCountX = getSkipCountX(size, random);
         int gorizontalRoadLenght = random.nextInt(2, 3);
         int gtemp = gorizontalRoadLenght;
         int temp = 0;
         boolean isRoad = false;
+        int counter = 0;
 
         for (int i = 0; i < size; i++) {
             if (isRoad) {
@@ -24,8 +26,7 @@ public class MatrixGenerator implements Generator<int[][]> {
                     worldMatrix[i][j] = 1;
                 }
                 isRoad = false;
-            }
-            else {
+            } else {
                 while (gorizontalRoadLenght > 0) {
                     gorizontalRoadLenght--;
                     while (temp < size) {
@@ -35,22 +36,18 @@ public class MatrixGenerator implements Generator<int[][]> {
                     temp = 0;
                     i++;
                 }
-                isRoad =true ;
+                isRoad = true;
             }
             gorizontalRoadLenght = gtemp;
             skipCountX = getSkipCountX(size, random);
         }
 
+
         return worldMatrix;
     }
 
     private static int getSkipCountX(int size, Random random) {
-        return random.nextInt( size - (size / 2));
-    }
-
-    public static void main(String[] args) {
-        MatrixGenerator generator = new MatrixGenerator();
-        System.out.println(Arrays.deepToString(generator.generate(20)));
+        return random.nextInt(size - (size / 2));
     }
 
 }
