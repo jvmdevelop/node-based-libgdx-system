@@ -13,7 +13,9 @@ public final class PackageSaver {
 
         Objects.requireNonNull(node, "object is null");
 
-        ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(Paths.get(Config.getPrefix() + "/" +category.getLocation() + "/" + node.getNodeName())));
+        String name = node.getNodeName() != null ? node.getNodeName() : String.valueOf(node.hashCode());
+
+        ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(Paths.get(Config.getPrefix() + File.separator +category.getLocation() + File.separator + name)));
 
         oos.writeObject(node);
         oos.flush();

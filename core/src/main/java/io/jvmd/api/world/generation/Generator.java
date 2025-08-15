@@ -1,7 +1,7 @@
 package io.jvmd.api.world.generation;
 
-public interface Generator<T> {
+public interface Generator<T, R> {
 
-    T generate(int size);
+    T generate(R size);
 
 }

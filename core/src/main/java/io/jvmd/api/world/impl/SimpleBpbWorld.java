@@ -15,6 +15,7 @@ import io.jvmd.api.data.PackageNode;
 import io.jvmd.api.world.BPBWorld;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -29,6 +30,12 @@ public class SimpleBpbWorld extends PackageNode implements BPBWorld  {
     @Override
     public Actor getActor(String name_id) {
         return actors.get(name_id);
+    }
+
+    public void addActors(List<Actor> actorsList) {
+        actorsList.forEach((actor)->{
+            actors.put(Actor.prefix + objectIndexer.giveIndex(actor),actor);
+        });
     }
 
     public int getIndex(Actor actor) {
@@ -52,6 +59,7 @@ public class SimpleBpbWorld extends PackageNode implements BPBWorld  {
         Box2DDebugRenderer renderer = new Box2DDebugRenderer();
         renderer.render(world, camera.combined);
         actors.values().forEach((actor) -> {
+            actor.setWorld(this);
             actor.setCamera(camera);
             actor.render(userBatch);
         });

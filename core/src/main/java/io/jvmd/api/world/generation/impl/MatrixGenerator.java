@@ -2,15 +2,14 @@ package io.jvmd.api.world.generation.impl;
 
 import io.jvmd.api.world.generation.Generator;
 
-import java.util.Arrays;
 import java.util.Random;
 
-public class MatrixGenerator implements Generator<int[][]> {
+public class MatrixGenerator implements Generator<Integer[][], Integer> {
 
 
     @Override
-    public int[][] generate(int size) {
-        int[][] worldMatrix = new int[size][size];
+    public Integer[][] generate(Integer size) {
+        Integer[][] worldMatrix = new Integer[size][size];
 
         Random random = new Random();
         int skipCountX = getSkipCountX(size, random);

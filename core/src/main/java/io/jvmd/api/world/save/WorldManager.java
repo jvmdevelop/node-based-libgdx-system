@@ -13,7 +13,7 @@ public final class WorldManager {
     private final List<String> worldsLinks = new ArrayList<>();
 
 
-    protected static class WorldSaver {
+    public static class WorldSaver {
 
         public static void save(List<SimpleBpbWorld> worlds) {
             worlds.forEach((world) -> {
@@ -27,11 +27,10 @@ public final class WorldManager {
 
     }
 
-    protected static class WorldLoader {
+    public static class WorldLoader {
 
         public static List<String> load() {
             ArrayList<String> worldLinks = new ArrayList<>();
-
 
             return worldLinks;
         }

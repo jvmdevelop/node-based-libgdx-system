@@ -1,12 +1,17 @@
 package io.jvmd.api.data;
 
-import com.badlogic.gdx.physics.box2d.World;
 import io.jvmd.api.preferences.Config;
-import io.jvmd.api.world.BPBWorld;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public enum ECategory implements BPBPackage {
 
@@ -30,17 +35,36 @@ public enum ECategory implements BPBPackage {
     };
 
     @Override
-    public Object load(String link) throws IOException, ClassNotFoundException {
+    public PackageNode load(String link) {
+        try (final ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(Paths.get(link)))) {
+
+            Object obj = ois.readObject();
+
+            if (obj instanceof PackageNode) {
+                return (PackageNode) obj;
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<String> loads() {
         StringBuilder builder = new StringBuilder();
         builder.append(Config.getPrefix());
-        builder.append("/").append(getLocation()).append("/").append(link);
+        builder.append(File.separator).append(getLocation()).append(File.separator);
 
-        ObjectInputStream ois = new ObjectInputStream(new URL(builder.toString()).openStream());
+        List<File> files = new ArrayList<>();
+        files.addAll(Arrays.asList(Objects.requireNonNull(Paths.get(builder.toString()).toFile().listFiles())));
+        List<String> worldLinks = new ArrayList<>();
+        files.forEach((file) -> {
+            worldLinks.add(file.getAbsolutePath());
+        });
 
-        Object obj = ois.readObject();
-        ois.close();
-
-        return obj;
+        return worldLinks;
     }
 
 

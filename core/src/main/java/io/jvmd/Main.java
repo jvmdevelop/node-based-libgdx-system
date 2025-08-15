@@ -10,6 +10,8 @@ import io.jvmd.api.actors.impl.AnimatedActor;
 import io.jvmd.api.actors.impl.entity.Entity;
 import io.jvmd.api.actors.impl.entity.EntityType;
 import io.jvmd.api.world.BPBWorld;
+import io.jvmd.api.world.generation.conventor.impl.MatrixConventor;
+import io.jvmd.api.world.generation.impl.MatrixGenerator;
 import io.jvmd.api.world.impl.SimpleBpbWorld;
 import io.jvmd.api.input.BPBInputProcessor;
 
@@ -28,7 +30,10 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create() {
-        world = new SimpleBpbWorld();
+        MatrixGenerator generator = new MatrixGenerator();
+        MatrixConventor  conventor = new MatrixConventor();
+        Integer[][] generate = generator.generate(100);
+        world = conventor.convent(generate);
         world.setup();
         batch = new SpriteBatch();
         world.setBatch(batch);

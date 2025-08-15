@@ -100,7 +100,7 @@ public class SimpleActor extends PackageNode implements Actor {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        batch.draw(texture, position.x, position.y);
+        batch.draw(texture, body.getPosition().x, body.getPosition().y);
 
         batch.end();
     }
