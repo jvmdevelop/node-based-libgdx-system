@@ -32,9 +32,8 @@ public class Main extends ApplicationAdapter {
     public void create() {
         MatrixGenerator generator = new MatrixGenerator();
         MatrixConventor  conventor = new MatrixConventor();
-        Integer[][] generate = generator.generate(100);
+        int[][] generate = generator.generate(100);
         world = conventor.convent(generate);
-        world.setup();
         batch = new SpriteBatch();
         world.setBatch(batch);
         OrthographicCamera camera = new OrthographicCamera();

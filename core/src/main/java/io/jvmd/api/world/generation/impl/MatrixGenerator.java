@@ -4,12 +4,12 @@ import io.jvmd.api.world.generation.Generator;
 
 import java.util.Random;
 
-public class MatrixGenerator implements Generator<Integer[][], Integer> {
+public class MatrixGenerator implements Generator<int[][], Integer> {
 
 
     @Override
-    public Integer[][] generate(Integer size) {
-        Integer[][] worldMatrix = new Integer[size][size];
+    public int[][] generate(Integer size) {
+        int[][] worldMatrix = new int[size][size];
 
         Random random = new Random();
         int skipCountX = getSkipCountX(size, random);

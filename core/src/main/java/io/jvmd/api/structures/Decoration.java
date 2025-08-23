@@ -15,7 +15,7 @@ public enum Decoration {
         public List<Actor> getVariates() {
             List<String> variates = new ArrayList<String>() {
                 {
-                    add("empty");
+                    add("empty.png");
                     add("player.png");
                 }
             };
@@ -29,7 +29,7 @@ public enum Decoration {
         public List<Actor> getVariates() {
             List<String> variates = new ArrayList<String>() {
                 {
-                    add("empty");
+                    add("empty.png");
                     add("player.png");
                 }
             };
@@ -44,7 +44,7 @@ public enum Decoration {
         public List<Actor> getVariates() {
             List<String> variates = new ArrayList<String>() {
                 {
-                    add("empty");
+                    add("empty.png");
                     add("player.png");
                 }
             };
@@ -52,13 +52,24 @@ public enum Decoration {
             List<Actor> actors = new ArrayList<>();
 
             variates.forEach((element)-> {
-                SimpleActor actor = new SimpleActor(BodyDef.BodyType.StaticBody , new Vector2(0,0) , new Vector2(10 , 10) , null);
+                SimpleActor actor = new SimpleActor(BodyDef.BodyType.StaticBody , new Vector2(0,0) , new Vector2(10 , 10) , getWorld());
                 actor.setTexture(new Texture(element));
+                actors.add(actor);
             });
 
             return actors;
         }
     };
+
+    private SimpleBpbWorld  world;
+
+    public SimpleBpbWorld getWorld() {
+        return world;
+    }
+
+    public void setWorld(SimpleBpbWorld world) {
+        this.world = world;
+    }
 
     public abstract List<Actor> getVariates();
 

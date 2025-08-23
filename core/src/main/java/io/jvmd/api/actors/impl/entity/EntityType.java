@@ -13,7 +13,7 @@ public enum EntityType {
     PLAYER {
         Vector2 camertaPosition = new Vector2();
         //todo make a settings lerp
-        float lerp = 0.01f;
+        float lerp = 0.1f;
 
 
         @Override
@@ -66,7 +66,7 @@ public enum EntityType {
     };
 
 
-    private float SPEED = 1f;
+    private float SPEED = 5f;
     private static final int defaultHealth = 100;
     private int health;
     private AnimatedActor body;
