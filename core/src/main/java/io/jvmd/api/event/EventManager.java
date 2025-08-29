@@ -4,8 +4,6 @@ import io.jvmd.api.event.handling.EventHandler;
 
 import java.util.*;
 
-import static java.lang.Thread.ofVirtual;
-
 public final class EventManager {
 
     private static final Set<Event> events = new HashSet<>();
