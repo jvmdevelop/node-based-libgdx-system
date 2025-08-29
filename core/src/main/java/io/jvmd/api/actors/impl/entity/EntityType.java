@@ -19,12 +19,20 @@ public enum EntityType {
         @Override
         public void move(Vector2 direction) {
 
-            if (direction.x > 0) {
+
+            if (direction.x > 0 ) {
                 getBody().setAnimating(true);
                 getBody().playAnimation("rotated" , false , false , true );
+            }else if (direction.x < 0 ) {
+                getBody().setAnimating(true);
+                getBody().playAnimation("rotated" , true , false , true );
             }else {
-//                getBody().stopAnimation();
+                getBody().setAnimating(true);
+                getBody().playAnimation("idle" , false , false , true );
             }
+
+
+
 
             direction.x *= PLAYER.SPEED;
             direction.y *= PLAYER.SPEED;

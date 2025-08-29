@@ -45,7 +45,7 @@ public enum Decoration {
             List<String> variates = new ArrayList<String>() {
                 {
                     add("empty.png");
-                    add("player.png");
+                    add("floor.png");
                 }
             };
 

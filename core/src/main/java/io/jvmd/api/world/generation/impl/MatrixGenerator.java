@@ -17,7 +17,6 @@ public class MatrixGenerator implements Generator<int[][], Integer> {
         int gtemp = gorizontalRoadLenght;
         int temp = 0;
         boolean isRoad = false;
-        int counter = 0;
 
         for (int i = 0; i < size; i++) {
             if (isRoad) {
@@ -33,7 +32,10 @@ public class MatrixGenerator implements Generator<int[][], Integer> {
                         temp += skipCountX;
                     }
                     temp = 0;
-                    i++;
+
+                    if (gorizontalRoadLenght != 0) {
+                        i++;
+                    }
                 }
                 isRoad = true;
             }
@@ -48,5 +50,6 @@ public class MatrixGenerator implements Generator<int[][], Integer> {
     private static int getSkipCountX(int size, Random random) {
         return random.nextInt(size - (size / 2));
     }
+
 
 }

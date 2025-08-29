@@ -23,11 +23,11 @@ public class MatrixConventor implements Conventor<SimpleBpbWorld, int[][]> {
             for (int y = 0; y < matrix[x].length; y++) {
                 if (matrix[x][y] == 1 || matrix[x][y] == 2) {
                     SimpleActor actor = (SimpleActor) floors.getActor(1);
-                    actor.setPosition(new Vector2(x*64, y*64));
+                    actor.setPosition(new Vector2(y*128, x*128));
                     actors.add(actor);
                 }else if (matrix[x][y] == 0) {
                     SimpleActor actor = (SimpleActor) floors.getActor(0);
-                    actor.setPosition(new Vector2(x*64, y*64));
+                    actor.setPosition(new Vector2(y*128, x*128));
                     actors.add(actor);
                 }
             }

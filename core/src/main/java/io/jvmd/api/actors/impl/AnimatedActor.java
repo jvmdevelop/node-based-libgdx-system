@@ -21,6 +21,7 @@ public class AnimatedActor extends SimpleActor {
     private Map<String, Texture> sheetsSource;
     private float stateTime;
     private boolean isAnimating;
+    private boolean isFlipped = false;
 
     public void setAnimating(boolean animating) {
         isAnimating = animating;
@@ -57,12 +58,18 @@ public class AnimatedActor extends SimpleActor {
         }
     }
 
+
     public void playAnimation(String animationName, boolean flipX, boolean flipY, boolean looping) {
         if (stateTime == -1) currenetFrame = new TextureRegion(getTexture());
         else {
             stateTime += Gdx.graphics.getDeltaTime();
             currenetFrame = animations.get(animationName).getKeyFrame(stateTime, looping);
-            currenetFrame.flip(flipX, flipY);
+
+            if (!isFlipped) {
+                currenetFrame.flip(flipX, flipY);
+                isFlipped = true;
+            }
+
             batch.begin();
             batch.draw(currenetFrame, getPosition().x, getPosition().y);
             batch.end();
@@ -71,6 +78,7 @@ public class AnimatedActor extends SimpleActor {
 
     public void stopAnimation() {
         stateTime = -1;
+        isFlipped = false;
         isAnimating = false;
     }
 

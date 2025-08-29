@@ -32,7 +32,7 @@ public class Main extends ApplicationAdapter {
     public void create() {
         MatrixGenerator generator = new MatrixGenerator();
         MatrixConventor  conventor = new MatrixConventor();
-        int[][] generate = generator.generate(100);
+        int[][] generate = generator.generate(50);
         world = conventor.convent(generate);
         batch = new SpriteBatch();
         world.setBatch(batch);
@@ -47,6 +47,7 @@ public class Main extends ApplicationAdapter {
         Map<String, String> paths = new HashMap<String, String>() {
             {
                 put("rotated", "player_rotate.png");
+                put("idle" , "player_idle.png");
             }
         };
 
