@@ -51,10 +51,9 @@ public class Main extends ApplicationAdapter {
             }
         };
 
-        animatedActor = new AnimatedActor(BodyDef.BodyType.StaticBody,
-            new Vector2(100, 100), new Vector2(5, 5), world, paths, 8, 1, 0.1f);
+        animatedActor = new AnimatedActor(BodyDef.BodyType.DynamicBody, new Texture("player.png") ,
+            new Vector2(-100, -100), new Vector2(5, 5), world, paths, 8, 1, 0.1f);
 
-        animatedActor.setTexture(new Texture("player.png"));
         animatedActor.setWorld(world);
         animatedActor.setCamera(camera);
 

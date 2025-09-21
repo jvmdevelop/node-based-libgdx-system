@@ -7,26 +7,23 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.jvmd.api.actors.Actor;
+import io.jvmd.api.actors.ShapedActor;
 import io.jvmd.api.data.PackageNode;
 import io.jvmd.api.world.BPBWorld;
 
-public class SimpleActor extends PackageNode implements Actor {
+public class SimpleActor extends ActorImpl implements ShapedActor {
 
-    private BPBWorld world;
-    private OrthographicCamera camera;
-    private Vector2 position;
-    private Texture texture;
+
     private Vector2 proportion;
     private Body body;
 
-    public Batch batch;
 
-    public SimpleActor(BodyDef.BodyType bodyType, Vector2 position, Vector2 proportion, BPBWorld world) {
+    public SimpleActor(BodyDef.BodyType bodyType, Texture texture , Vector2 position, Vector2 proportion, BPBWorld world) {
+        super(position, texture);
         this.proportion = proportion;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
-        this.position = position;
-        bodyDef.position.set(this.position);
+        bodyDef.position.set(calculatePosition());
         body  = world.getWorld().createBody(bodyDef);
         FixtureDef fixtureDef = new FixtureDef();
         PolygonShape shape = getShape();
@@ -39,44 +36,31 @@ public class SimpleActor extends PackageNode implements Actor {
         shape.dispose();
     }
 
+    private Vector2 calculatePosition() {
+        Texture texture = getTexture();
+        int x = (int) (getPosition().x + ((float) texture.getHeight() / 2));
+        int y = (int) (getPosition().y + ((float) texture.getWidth() / 2));
+        return new Vector2(x, y);
+    }
+
+
     @Override
-    public BPBWorld getWorld() {
-        return world;
+    public void render(Batch batch) {
+        if (this.batch == null) {
+            this.batch = batch;
+        }
+        body.setTransform(getPosition().x, getPosition().y , 0);
+        batch.setProjectionMatrix(getCamera().combined);
+        batch.begin();
+
+        batch.draw(getTexture(), body.getPosition().x, body.getPosition().y);
+
+        batch.end();
     }
 
     @Override
-    public void setWorld(BPBWorld world) {
-        this.world = world;
-    }
-
-    @Override
-    public OrthographicCamera getCamera() {
-        return camera;
-    }
-
-    @Override
-    public void setCamera(Camera camera) {
-        this.camera = ( OrthographicCamera) camera;
-    }
-
-    @Override
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
-
-    @Override
-    public Vector2 getPosition() {
-        return position;
-    }
-
-    @Override
-    public Texture getTexture() {
-        return texture;
-    }
-
-    @Override
-    public void setTexture(Texture texture) {
-        this.texture = texture;
+    public void setProportions(Vector2 proportions) {
+        this.proportion = proportions;
     }
 
     @Override
@@ -86,27 +70,11 @@ public class SimpleActor extends PackageNode implements Actor {
         return shape;
     }
 
-    @Override
-    public void setProportions(Vector2 proportions) {
-        this.proportion = proportions;
+    public Body getBody() {
+        return body;
     }
 
-    @Override
-    public void render(Batch batch) {
-        if (this.batch == null) {
-            this.batch = batch;
-        }
-        body.setTransform(position.x, position.y, 0);
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-
-        batch.draw(texture, body.getPosition().x, body.getPosition().y);
-
-        batch.end();
-    }
-
-    @Override
-    public void dispose() {
-        batch.dispose();
+    public Vector2 getProportion() {
+        return proportion;
     }
 }

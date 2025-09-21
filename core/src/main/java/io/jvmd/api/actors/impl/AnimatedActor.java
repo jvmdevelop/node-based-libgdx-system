@@ -30,8 +30,8 @@ public class AnimatedActor extends SimpleActor {
     private TextureRegion currenetFrame;
 
 
-    public AnimatedActor(BodyDef.BodyType bodyType, Vector2 position, Vector2 proportion, BPBWorld world, Map<String, String> sheets, int cols, int rows, float frameDuration) {
-        super(bodyType, position, proportion, world);
+    public AnimatedActor(BodyDef.BodyType bodyType,Texture objectTexture ,  Vector2 position, Vector2 proportion, BPBWorld world, Map<String, String> sheets, int cols, int rows, float frameDuration) {
+        super(bodyType, objectTexture, position, proportion, world);
         sheetsSource = new HashMap<>();
         animations = new HashMap<>();
         sheets.forEach((name, sheetPath) -> {
@@ -53,8 +53,20 @@ public class AnimatedActor extends SimpleActor {
 
     @Override
     public void render(Batch batch) {
+        if (this.batch == null) {
+            this.batch = batch;
+        }
+
+        getBody().setLinearVelocity(getVelocity());
+        setPosition(getBody().getPosition());
+        batch.setProjectionMatrix(getCamera().combined);
         if (!isAnimating) {
-            super.render(batch);
+
+            batch.begin();
+
+            batch.draw(getTexture(), getBody().getPosition().x, getBody().getPosition().y);
+
+            batch.end();
         }
     }
 
@@ -71,7 +83,7 @@ public class AnimatedActor extends SimpleActor {
             }
 
             batch.begin();
-            batch.draw(currenetFrame, getPosition().x, getPosition().y);
+            batch.draw(currenetFrame, getBody().getPosition().x, getBody().getPosition().y);
             batch.end();
         }
     }

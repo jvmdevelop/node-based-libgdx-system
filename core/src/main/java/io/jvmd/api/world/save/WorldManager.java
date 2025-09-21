@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class WorldManager {
 
-    private final List<String> worldsLinks = new ArrayList<>();
+    private static List<String> worldsLinks = new ArrayList<>();
 
 
     public static class WorldSaver {
@@ -30,9 +30,9 @@ public final class WorldManager {
     public static class WorldLoader {
 
         public static List<String> load() {
-            ArrayList<String> worldLinks = new ArrayList<>();
+            worldsLinks = ECategory.WORLD.loads();
 
-            return worldLinks;
+            return worldsLinks;
         }
 
     }

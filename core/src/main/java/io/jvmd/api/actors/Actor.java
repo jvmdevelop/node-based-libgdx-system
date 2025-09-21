@@ -22,16 +22,14 @@ public interface Actor {
     Vector2 getPosition();
 
     Texture getTexture();
+
     void setTexture(Texture texture);
-
-    PolygonShape getShape();
-
-    void setProportions(Vector2 proportions);
 
     void render(Batch batch);
 
     void dispose();
 
-
+    Vector2 getVelocity();
+    void setVelocity(Vector2 velocity);
 
 }

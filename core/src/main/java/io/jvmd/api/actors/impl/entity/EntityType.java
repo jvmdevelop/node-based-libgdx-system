@@ -32,14 +32,10 @@ public enum EntityType {
             }
 
 
-
-
-            direction.x *= PLAYER.SPEED;
-            direction.y *= PLAYER.SPEED;
-            getBody().setPosition(getBody().getPosition().add(direction));
+            // todo sync camera and player
+            getBody().setVelocity(direction.scl(100));
             OrthographicCamera camera = getBody().getCamera();
-            camertaPosition.lerp(getBody().getPosition(), lerp);
-
+            camertaPosition.lerp(getBody().getPosition() , lerp);
             camera.position.x = camertaPosition.x;
             camera.position.y = camertaPosition.y;
 
